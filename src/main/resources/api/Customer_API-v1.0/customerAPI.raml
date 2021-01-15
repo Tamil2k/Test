@@ -1,0 +1,70 @@
+#%RAML 1.0
+title: Customer REST Services API using Data Types
+version: v1
+protocols: [ HTTPS ] 
+mediaType: application/json
+            
+types:
+  Customer:
+    properties:
+      id: integer
+      name: string
+      ownerName?: string
+  Error:
+    properties:
+      code: integer
+      message: string
+      
+/customer:
+  get:
+    description: List all customers matching query criteria if given else will list all customers
+    queryParameters:
+      name?: string
+      role?: string
+    responses:
+      200:
+        body:
+          application/json:
+            type: Customer[]
+            example: |
+              [
+                 {"id":1, "name":"First Customer"},
+                 {"id":2, "name":"Second Customer"}
+              ]
+  post:
+    description: Create a new customer
+    body:
+      application/json:
+        type: Customer
+        example: { "id" : 5, "name" : "Another Customer" }
+    responses:
+      201:
+        body:
+          application/json:
+            type: Customer
+            example: { "id" : 5, "name" : "Another Customer" }
+  /{id}:
+    get:
+      description: Get a Customer by id
+      responses:
+        200:
+          body:
+            application/json:
+              type: Customer
+              example: {"id":1, "name":"First Customer"}
+
+              
+    put:
+      description: Update Customer by id
+      responses:
+        200:
+          body:
+            application/json:
+              type: Customer
+              example: {"id":1, "name":"First Customer"}
+    delete:
+      description: Delete all customerrs
+      responses:
+        200:
+          body:
+            application/json:
